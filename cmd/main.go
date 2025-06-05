@@ -57,6 +57,7 @@ func main() {
 	if err := db.RunSQLFile(database, "db.sql"); err != nil {
 		logger.Fatal().Err(err).Msg("Failed to apply DB schema")
 	}
+	log.Println(" created tables")
 
 	// Initialize services
 	authService := auth.NewOpenIDService(cfg.Auth)
