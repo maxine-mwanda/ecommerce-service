@@ -47,3 +47,26 @@ func (r *ProductRepository) GetByCategory(ctx context.Context, categoryID string
 
 	return products, nil
 }
+
+// internal/repositories/product.go (add this method)
+func (r *ProductRepository) GetByID(ctx context.Context, id string) (*models.Product, error) {
+	query := `SELECT id, name, description, price, category_id, created_at, updated_at 
+	          FROM products WHERE id = ?`
+	row := r.db.QueryRowContext(ctx, query, id)
+
+	var product models.Product
+	err := row.Scan(
+		&product.ID,
+		&product.Name,
+		&product.Description,
+		&product.Price,
+		&product.CategoryID,
+		&product.CreatedAt,
+		&product.UpdatedAt,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &product, nil
+}

@@ -16,6 +16,8 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+
+	"github.com/rs/zerolog"
 )
 
 func main() {
@@ -44,18 +46,25 @@ func main() {
 		logger.Fatal().Err(err).Msg("Failed to run migrations")
 	}
 
-	// Initialize repositories
-	orderRepo := repositories.NewOrderRepository(database)
-	productRepo := repositories.NewProductRepository(database)
-	categoryRepo := repositories.NewCategoryRepository(database)
-	customerRepo := repositories.NewCustomerRepository(database)
-
 	// Initialize services
 	authService := auth.NewOpenIDService(cfg.Auth)
 	notificationService := services.NewNotificationService(cfg.Notifications)
-	orderService := services.NewOrderService(orderRepo, productRepo, customerRepo, notificationService)
-	productService := services.NewProductService(productRepo, categoryRepo)
-	categoryService := services.NewCategoryService(categoryRepo)
+
+	orderService := services.NewOrderService(
+		repositories.NewOrderRepository(database),
+		*repositories.NewProductRepository(database),
+		*repositories.NewCustomerRepository(database),
+		*notificationService,
+	)
+
+	productService := services.NewProductService(
+		*repositories.NewProductRepository(database),
+		*repositories.NewCategoryRepository(database),
+	)
+
+	categoryService := services.NewCategoryService(
+		*repositories.NewCategoryRepository(database),
+	)
 
 	// Initialize HTTP handlers
 	handler := handlers.NewAPIHandler(
@@ -63,7 +72,7 @@ func main() {
 		orderService,
 		productService,
 		categoryService,
-		logger,
+		&zerolog.Logger{},
 	)
 
 	// Create HTTP server

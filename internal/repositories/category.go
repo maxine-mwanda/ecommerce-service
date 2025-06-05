@@ -36,3 +36,22 @@ func (r *CategoryRepository) GetAveragePrice(ctx context.Context, categoryID str
 
 	return avgPrice.Float64, nil
 }
+
+// internal/repositories/category.go (add these methods)
+func (r *CategoryRepository) GetByID(ctx context.Context, id string) (*models.Category, error) {
+	query := `SELECT id, name, parent_id FROM categories WHERE id = ?`
+	row := r.db.QueryRowContext(ctx, query, id)
+
+	var category models.Category
+	var parentID sql.NullString
+	err := row.Scan(&category.ID, &category.Name, &parentID)
+	if err != nil {
+		return nil, err
+	}
+
+	if parentID.Valid {
+		category.ParentID = &parentID.String
+	}
+
+	return &category, nil
+}
