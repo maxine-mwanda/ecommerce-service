@@ -2,6 +2,8 @@
 package config
 
 import (
+	"log"
+
 	"github.com/kelseyhightower/envconfig"
 )
 
@@ -61,6 +63,7 @@ func Load() (*Config, error) {
 	var cfg Config
 	err := envconfig.Process("", &cfg)
 	if err != nil {
+		log.Printf("envconfig.Process failed: %v", err)
 		return nil, err
 	}
 	return &cfg, nil

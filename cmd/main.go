@@ -17,18 +17,26 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/joho/godotenv"
 	"github.com/rs/zerolog"
 )
 
 func main() {
+	// Load .env file
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Println("No .env file found — relying on system environment variables")
+	}
 	// Load configuration
 	cfg, err := config.Load()
 	if err != nil {
 		log.Fatalf("Failed to load configuration: %v", err)
 	}
+	log.Printf("Loaded config: %+v\n", cfg)
 
 	// Initialize logging
 	logger, err := logging.NewRotateLogger(cfg.Logging.Directory, cfg.Logging.Filename)
+	log.Printf("logger initialised succesfully")
 	if err != nil {
 		log.Fatalf("Failed to initialize logger: %v", err)
 	}
@@ -36,14 +44,18 @@ func main() {
 
 	// Database connection
 	database, err := db.ConnectMySQL(cfg.Database)
+	log.Println("Database ziko")
 	if err != nil {
+		log.Printf("cannot load db")
 		logger.Fatal().Err(err).Msg("Failed to connect to database")
 	}
 	defer database.Close()
+	logger.Info().Msg("Successfully connected to database")
 
 	// Run migrations
-	if err := db.RunMigrations(database, cfg.Database); err != nil {
-		logger.Fatal().Err(err).Msg("Failed to run migrations")
+	log.Println("About to create tables...")
+	if err := db.RunSQLFile(database, "db.sql"); err != nil {
+		logger.Fatal().Err(err).Msg("Failed to apply DB schema")
 	}
 
 	// Initialize services

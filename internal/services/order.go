@@ -5,6 +5,7 @@ import (
 	"context"
 	"ecommerce-service/internal/models"
 	"ecommerce-service/internal/repositories"
+	"fmt"
 	"strconv"
 )
 
@@ -40,6 +41,9 @@ func (s *orderService) CreateOrder(ctx context.Context, order *models.Order) err
 	// Create order in database
 	if err := s.orderRepo.Create(ctx, order); err != nil {
 		return err
+	}
+	if err := s.orderRepo.Create(ctx, order); err != nil {
+		return fmt.Errorf("orderService.CreateOrder failed: %w", err)
 	}
 
 	// Get customer details for notifications

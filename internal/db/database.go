@@ -5,16 +5,16 @@ import (
 	"database/sql"
 	"ecommerce-service/internal/config"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/golang-migrate/migrate/v4"
-	"github.com/golang-migrate/migrate/v4/database/mysql"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
 func ConnectMySQL(cfg config.DatabaseConfig) (*sql.DB, error) {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true",
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true&timeout=5s&readTimeout=5s&writeTimeout=5s&multiStatements=true",
 		cfg.User,
 		cfg.Password,
 		cfg.Host,
@@ -38,24 +38,21 @@ func ConnectMySQL(cfg config.DatabaseConfig) (*sql.DB, error) {
 	return db, nil
 }
 
-func RunMigrations(db *sql.DB, cfg config.DatabaseConfig) error {
-	driver, err := mysql.WithInstance(db, &mysql.Config{})
+func RunSQLFile(db *sql.DB, filePath string) error {
+	sqlBytes, err := ioutil.ReadFile(filePath)
 	if err != nil {
+		log.Printf("Failed to read SQL file: %v", err)
 		return err
 	}
 
-	m, err := migrate.NewWithDatabaseInstance(
-		"file://migrations",
-		"mysql",
-		driver,
-	)
+	sqlStatements := string(sqlBytes)
+
+	_, err = db.Exec(sqlStatements)
 	if err != nil {
+		log.Printf("Failed to execute SQL statements: %v", err)
 		return err
 	}
 
-	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
-		return err
-	}
-
+	fmt.Println("SQL schema applied successfully.")
 	return nil
 }

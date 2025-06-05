@@ -48,6 +48,9 @@ func (h *APIHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	router.HandleFunc("/orders", h.createOrder).Methods("POST")
 	router.HandleFunc("/orders/{id}", h.getOrder).Methods("GET")
 
+	//health check
+	router.HandleFunc("/health", h.healthCheck).Methods("GET")
+
 	// Auth middleware
 	authRouter := router.PathPrefix("/").Subrouter()
 	authRouter.Use(h.authMiddleware)
@@ -168,4 +171,19 @@ func (h *APIHandler) secureHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
+}
+
+// internal/handlers/api.go
+
+// Add this method
+func (h *APIHandler) healthCheck(w http.ResponseWriter, r *http.Request) {
+	var err error
+	if err != nil {
+		h.logger.Error().Err(err).Msg("Database health check failed")
+		http.Error(w, "Database unavailable", http.StatusServiceUnavailable)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"status": "healthy"})
 }

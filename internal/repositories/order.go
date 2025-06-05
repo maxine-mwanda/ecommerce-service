@@ -11,6 +11,7 @@ import (
 type OrderRepository interface {
 	Create(ctx context.Context, order *models.Order) error
 	GetByID(ctx context.Context, id string) (*models.Order, error)
+	//PingDB(ctx context.Context) error
 }
 
 type orderRepository struct {
@@ -81,4 +82,9 @@ func (r *orderRepository) GetByID(ctx context.Context, id string) (*models.Order
 	order.Items = items
 
 	return &order, nil
+}
+
+// internal/repositories/order.go
+func (r *orderRepository) Ping(ctx context.Context) error {
+	return r.db.PingContext(ctx)
 }
