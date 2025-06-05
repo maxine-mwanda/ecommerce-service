@@ -32,12 +32,15 @@ type Product struct {
 }
 
 type Order struct {
-	ID          string      `json:"id"`
-	CustomerID  string      `json:"customer_id" validate:"required"`
-	OrderDate   time.Time   `json:"order_date"`
-	Status      string      `json:"status"`
-	TotalAmount float64     `json:"total_amount"`
-	Items       []OrderItem `json:"items"`
+	ID            string      `json:"id"`
+	CustomerID    string      `json:"customer_id" validate:"required"`
+	OrderDate     time.Time   `json:"order_date"`
+	Status        string      `json:"status"`
+	TotalAmount   float64     `json:"total_amount"`
+	Items         []OrderItem `json:"items"`
+	CustomerEmail string      `json:"customer_email,omitempty"`
+	CustomerName  string      `json:"customer_name,omitempty"`
+	CustomerPhone string      `json:"customer_phone,omitempty"`
 }
 
 type OrderItem struct {

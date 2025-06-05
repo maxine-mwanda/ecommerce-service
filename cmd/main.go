@@ -32,7 +32,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to load configuration: %v", err)
 	}
-	log.Printf("Loaded config: %+v\n", cfg)
+	log.Printf("Loaded configs")
 
 	// Initialize logging
 	logger, err := logging.NewRotateLogger(cfg.Logging.Directory, cfg.Logging.Filename)
@@ -44,7 +44,6 @@ func main() {
 
 	// Database connection
 	database, err := db.ConnectMySQL(cfg.Database)
-	log.Println("Database ziko")
 	if err != nil {
 		log.Printf("cannot load db")
 		logger.Fatal().Err(err).Msg("Failed to connect to database")
@@ -53,7 +52,6 @@ func main() {
 	logger.Info().Msg("Successfully connected to database")
 
 	// Run migrations
-	log.Println("About to create tables...")
 	if err := db.RunSQLFile(database, "db.sql"); err != nil {
 		logger.Fatal().Err(err).Msg("Failed to apply DB schema")
 	}

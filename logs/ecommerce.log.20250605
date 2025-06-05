@@ -81,3 +81,37 @@
 {"level":"fatal","error":"Error 1062 (23000): Duplicate entry '11111111-1111-1111-1111-111111111111' for key 'categories.PRIMARY'","time":"2025-06-05T18:23:28+03:00","message":"Failed to apply DB schema"}
 {"level":"info","time":"2025-06-05T18:24:06+03:00","message":"Successfully connected to database"}
 {"level":"info","port":"8080","time":"2025-06-05T18:24:13+03:00","message":"Starting server"}
+{"level":"info","time":"2025-06-05T18:39:55+03:00","message":"Shutting down server..."}
+{"level":"info","time":"2025-06-05T18:39:55+03:00","message":"Server exiting"}
+{"level":"info","time":"2025-06-05T19:03:50+03:00","message":"Successfully connected to database"}
+{"level":"info","port":"8080","time":"2025-06-05T19:03:55+03:00","message":"Starting server"}
+{"level":"info","time":"2025-06-05T19:05:17+03:00","message":"Shutting down server..."}
+{"level":"info","time":"2025-06-05T19:05:17+03:00","message":"Server exiting"}
+{"level":"info","time":"2025-06-05T19:05:20+03:00","message":"Successfully connected to database"}
+{"level":"info","port":"8080","time":"2025-06-05T19:05:20+03:00","message":"Starting server"}
+{"level":"info","time":"2025-06-05T19:41:12+03:00","message":"Shutting down server..."}
+{"level":"info","time":"2025-06-05T19:41:12+03:00","message":"Server exiting"}
+{"level":"info","time":"2025-06-05T19:41:14+03:00","message":"Successfully connected to database"}
+{"level":"info","port":"8080","time":"2025-06-05T19:41:15+03:00","message":"Starting server"}
+{"level":"info","time":"2025-06-05T19:44:32+03:00","message":"Shutting down server..."}
+{"level":"info","time":"2025-06-05T19:44:32+03:00","message":"Server exiting"}
+{"level":"info","time":"2025-06-05T19:44:34+03:00","message":"Successfully connected to database"}
+{"level":"info","port":"8080","time":"2025-06-05T19:44:35+03:00","message":"Starting server"}
+{"level":"info","time":"2025-06-05T19:54:59+03:00","message":"Shutting down server..."}
+{"level":"info","time":"2025-06-05T19:54:59+03:00","message":"Server exiting"}
+{"level":"info","time":"2025-06-05T19:55:02+03:00","message":"Successfully connected to database"}
+{"level":"info","port":"8080","time":"2025-06-05T19:55:03+03:00","message":"Starting server"}
+{"level":"info","time":"2025-06-05T20:06:59+03:00","message":"Shutting down server..."}
+{"level":"info","time":"2025-06-05T20:06:59+03:00","message":"Server exiting"}
+{"level":"info","time":"2025-06-05T20:23:36+03:00","message":"Successfully connected to database"}
+{"level":"info","port":"8080","time":"2025-06-05T20:23:37+03:00","message":"Starting server"}
+{"level":"info","time":"2025-06-05T20:31:23+03:00","message":"Shutting down server..."}
+{"level":"info","time":"2025-06-05T20:31:23+03:00","message":"Server exiting"}
+{"level":"info","time":"2025-06-05T20:31:32+03:00","message":"Successfully connected to database"}
+{"level":"info","port":"8080","time":"2025-06-05T20:31:33+03:00","message":"Starting server"}
+{"level":"info","time":"2025-06-05T20:33:36+03:00","message":"Shutting down server..."}
+{"level":"info","time":"2025-06-05T20:33:36+03:00","message":"Server exiting"}
+{"level":"info","time":"2025-06-05T20:33:38+03:00","message":"Successfully connected to database"}
+{"level":"info","port":"8080","time":"2025-06-05T20:33:39+03:00","message":"Starting server"}
+{"level":"info","time":"2025-06-05T21:00:23+03:00","message":"Shutting down server..."}
+{"level":"info","time":"2025-06-05T21:00:23+03:00","message":"Server exiting"}

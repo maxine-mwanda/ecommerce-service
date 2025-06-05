@@ -52,11 +52,18 @@ type SMSConfig struct {
 }
 
 type EmailConfig struct {
-	SMTPHost     string `envconfig:"SMTP_HOST"`
-	SMTPPort     int    `envconfig:"SMTP_PORT" default:"587"`
-	SMTPUser     string `envconfig:"SMTP_USER"`
-	SMTPPassword string `envconfig:"SMTP_PASSWORD"`
-	FromEmail    string `envconfig:"FROM_EMAIL" default:"no-reply@ecommerce.com"`
+	SMTPHost         string `envconfig:"SMTP_HOST"`
+	SMTPPort         int    `envconfig:"SMTP_PORT" default:"587"`
+	SMTPUser         string `envconfig:"SMTP_USER"`
+	SMTPPassword     string `envconfig:"SMTP_PASSWORD"`
+	FromEmail        string `envconfig:"FROM_EMAIL" default:"no-reply@ecommerce.com"`
+	SMTPEmail        string `envconfig:"SMTP_EMAIL" default:"`
+	SMTPClientID     string `envconfig:"SMTP_CLIENT_ID"`
+	SMTPClientSecret string `envconfig:"SMTP_CLIENT_SECRET"`
+	SMTPRefreshToken string `envconfig:"SMTP_REFRESH_TOKEN"`
+	ClientID         string // from Google Cloud Console OAuth2
+	ClientSecret     string
+	RefreshToken     string // Google OAuth2 refresh token with mail.google.com scope
 }
 
 func Load() (*Config, error) {
