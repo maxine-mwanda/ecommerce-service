@@ -1,5 +1,5 @@
 # Dockerfile
-FROM golang:1.19-alpine AS builder
+FROM golang:1.23-alpine AS builder
 
 WORKDIR /app
 COPY . .
@@ -13,7 +13,7 @@ RUN apk --no-cache add ca-certificates
 
 WORKDIR /root/
 COPY --from=builder /app/ecommerce-service .
-COPY --from=builder /app/migrations ./migrations
 
 EXPOSE 8080
 CMD ["./ecommerce-service"]
+

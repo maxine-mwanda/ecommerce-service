@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ecommerce-config
+data:
+  APP_ENV: production
+  SERVER_PORT: "8080"
+  DB_HOST: "mysql"
+  DB_PORT: "3306"
+  DB_NAME: "ecommerce"
+  LOG_LEVEL: "info"

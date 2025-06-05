@@ -68,3 +68,16 @@
 {"level":"info","time":"2025-06-05T14:56:15+03:00","message":"Server exiting"}
 {"level":"info","time":"2025-06-05T14:56:19+03:00","message":"Successfully connected to database"}
 {"level":"info","port":"8080","time":"2025-06-05T14:56:20+03:00","message":"Starting server"}
+{"level":"info","time":"2025-06-05T16:08:02+03:00","message":"Successfully connected to database"}
+{"level":"info","time":"2025-06-05T16:15:47+03:00","message":"Successfully connected to database"}
+{"level":"info","port":"8080","time":"2025-06-05T16:15:59+03:00","message":"Starting server"}
+{"level":"info","time":"2025-06-05T17:37:37+03:00","message":"Shutting down server..."}
+{"level":"info","time":"2025-06-05T17:37:37+03:00","message":"Server exiting"}
+{"level":"info","time":"2025-06-05T17:37:41+03:00","message":"Successfully connected to database"}
+{"level":"info","port":"8080","time":"2025-06-05T17:37:48+03:00","message":"Starting server"}
+{"level":"info","time":"2025-06-05T18:20:44+03:00","message":"Shutting down server..."}
+{"level":"info","time":"2025-06-05T18:20:44+03:00","message":"Server exiting"}
+{"level":"info","time":"2025-06-05T18:23:28+03:00","message":"Successfully connected to database"}
+{"level":"fatal","error":"Error 1062 (23000): Duplicate entry '11111111-1111-1111-1111-111111111111' for key 'categories.PRIMARY'","time":"2025-06-05T18:23:28+03:00","message":"Failed to apply DB schema"}
+{"level":"info","time":"2025-06-05T18:24:06+03:00","message":"Successfully connected to database"}
+{"level":"info","port":"8080","time":"2025-06-05T18:24:13+03:00","message":"Starting server"}
