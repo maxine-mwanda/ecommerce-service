@@ -13,8 +13,8 @@ spec:
         app: ecommerce-service
     spec:
       containers:
-      - name: app
-        image: your-dockerhub-username/ecommerce-service:latest
+      - name: ecommerce-service
+        image: gcr.io/my-application-462106/ecommerce-service:latest 
         ports:
         - containerPort: 8080
         envFrom:
