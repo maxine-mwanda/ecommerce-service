@@ -1,3 +1,7 @@
 .env
 go mod
 go sum.env
+
+.env
+*.secret
+config/*.yaml
