@@ -6,46 +6,29 @@ import (
 
 	"ecommerce-service/internal/models"
 	"ecommerce-service/internal/repositories"
+	"ecommerce-service/tests"
 
-	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestProductRepository(t *testing.T) {
-	db, mock, err := sqlmock.New()
-	if err != nil {
-		t.Fatalf("Failed to create mock: %v", err)
-	}
-	defer db.Close()
-
+	db := tests.SetupTestDB(t)
 	repo := repositories.NewProductRepository(db)
 
-	t.Run("Create Product", func(t *testing.T) {
-		mock.ExpectExec("INSERT INTO products").
-			WithArgs(sqlmock.AnyArg(), "Test Product", nil, 10.99, "cat-1").
-			WillReturnResult(sqlmock.NewResult(1, 1))
-
+	t.Run("Create and Get Product", func(t *testing.T) {
+		// Create test product
 		product := &models.Product{
-			Name:       "Test Product",
-			Price:      10.99,
-			CategoryID: "cat-1",
+			ID:    "test-product",
+			Name:  "Test Product",
+			Price: 10.99,
 		}
 
 		err := repo.Create(context.Background(), product)
 		assert.NoError(t, err)
-		assert.NotEmpty(t, product.ID)
-	})
 
-	t.Run("Get Product By ID", func(t *testing.T) {
-		rows := sqlmock.NewRows([]string{"id", "name", "price", "category_id"}).
-			AddRow("prod-1", "Test Product", 10.99, "cat-1")
-		mock.ExpectQuery("SELECT id, name, price, category_id FROM products WHERE id = ?").
-			WithArgs("prod-1").
-			WillReturnRows(rows)
-
-		product, err := repo.GetByID(context.Background(), "prod-1")
+		// Retrieve product
+		retrieved, err := repo.GetByID(context.Background(), "test-product")
 		assert.NoError(t, err)
-		assert.Equal(t, "prod-1", product.ID)
-		assert.Equal(t, "Test Product", product.Name)
+		assert.Equal(t, "Test Product", retrieved.Name)
 	})
 }

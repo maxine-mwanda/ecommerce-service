@@ -6,6 +6,7 @@ import (
 	"ecommerce-service/internal/models"
 	"ecommerce-service/internal/services"
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -17,6 +18,7 @@ type APIHandler struct {
 	orderService    services.OrderService
 	productService  services.ProductService
 	categoryService services.CategoryService
+	notifier        services.NotificationService
 	logger          *zerolog.Logger
 }
 
@@ -50,6 +52,12 @@ func (h *APIHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	//health check
 	router.HandleFunc("/health", h.healthCheck).Methods("GET")
+
+	// SMS Callback route
+	router.HandleFunc("/notifications/sms-callback", h.SMSCallback).Methods("POST")
+
+	//email
+	router.HandleFunc("/notifications/send-test-email", h.SendTestEmail).Methods("POST")
 
 	// Auth middleware
 	authRouter := router.PathPrefix("/").Subrouter()
@@ -173,9 +181,7 @@ func (h *APIHandler) secureHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
-// internal/handlers/api.go
-
-// Add this method
+// Add this method health check
 func (h *APIHandler) healthCheck(w http.ResponseWriter, r *http.Request) {
 	var err error
 	if err != nil {
@@ -186,4 +192,44 @@ func (h *APIHandler) healthCheck(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"status": "healthy"})
+}
+
+func (h *APIHandler) SMSCallback(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		log.Printf("Failed to parse callback form: %v", err)
+		http.Error(w, "Invalid callback payload", http.StatusBadRequest)
+		return
+	}
+
+	phone := r.FormValue("from")
+	text := r.FormValue("text")
+	date := r.FormValue("date")
+
+	log.Printf("📩 Incoming SMS Callback — From: %s | Text: %s | Date: %s", phone, text, date)
+
+	// Optionally, persist to DB or trigger actions here
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Received"))
+}
+
+func (h *APIHandler) SendTestEmail(w http.ResponseWriter, r *http.Request) {
+	to := r.URL.Query().Get("to")
+	if to == "" {
+		http.Error(w, "Missing 'to' query param", http.StatusBadRequest)
+		return
+	}
+
+	subject := "Hello from Ecommerce-Service"
+	body := "Hi Maxine — your SMTP integration is working 🎉"
+
+	err := h.notifier.SendOrderNotificationEmail(to, subject, body)
+	if err != nil {
+		http.Error(w, "Failed to send email: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("✅ Test email sent"))
 }

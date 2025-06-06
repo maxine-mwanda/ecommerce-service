@@ -5,7 +5,6 @@ go 1.23.0
 toolchain go1.23.5
 
 require (
-	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/coreos/go-oidc/v3 v3.14.1
 	github.com/go-sql-driver/mysql v1.9.2
 	github.com/golang-migrate/migrate/v4 v4.18.3
@@ -22,6 +21,7 @@ require (
 require (
 	cloud.google.com/go/compute/metadata v0.3.0 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/AndroidStudyOpenSource/africastalking-go v0.0.0-20200515172509-94a151ad63fe // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-jose/go-jose/v4 v4.0.5 // indirect
 	github.com/jonboulle/clockwork v0.5.0 // indirect

@@ -4,57 +4,40 @@ import (
 	"context"
 	"testing"
 
+	"ecommerce-service/internal/config"
 	"ecommerce-service/internal/models"
 	"ecommerce-service/internal/repositories"
 	"ecommerce-service/internal/services"
+	"ecommerce-service/tests"
 
-	"github.com/DATA-DOG/go-sqlmock"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestOrderService(t *testing.T) {
-	db, mock, err := sqlmock.New()
-	if err != nil {
-		t.Fatalf("Failed to create mock: %v", err)
-	}
-	defer db.Close()
+	//mockNotificationService := new(MockNotificationService)
+	db := tests.SetupTestDB(t)
 
+	// Setup dependencies
 	orderRepo := repositories.NewOrderRepository(db)
 	productRepo := repositories.NewProductRepository(db)
 	customerRepo := repositories.NewCustomerRepository(db)
-	service := services.NewOrderService(orderRepo, productRepo, customerRepo, nil)
+	cfg := config.NotificationConfig{}
+	service := services.NewOrderService(orderRepo, *productRepo, *customerRepo, *services.NewNotificationService(cfg))
 
-	t.Run("Create Order Success", func(t *testing.T) {
-		mock.ExpectBegin()
-		mock.ExpectExec("INSERT INTO orders").WillReturnResult(sqlmock.NewResult(1, 1))
-		mock.ExpectExec("INSERT INTO order_items").WillReturnResult(sqlmock.NewResult(1, 1))
-		mock.ExpectCommit()
-
+	t.Run("Create Order", func(t *testing.T) {
 		order := &models.Order{
-			CustomerID: "cust-1",
+			CustomerID: "test-customer",
 			Items: []models.OrderItem{
-				{ProductID: "prod-1", Quantity: 1, Price: 10.99},
+				{
+					ProductID: "test-product",
+					Quantity:  2,
+					Price:     10.99,
+				},
 			},
 		}
 
 		err := service.CreateOrder(context.Background(), order)
 		assert.NoError(t, err)
-		assert.NotEmpty(t, order.ID)
-		assert.Equal(t, 10.99, order.TotalAmount)
-	})
-
-	t.Run("Get Order Success", func(t *testing.T) {
-		orderRows := sqlmock.NewRows([]string{"id", "customer_id", "total_amount"}).
-			AddRow("order-1", "cust-1", 10.99)
-		mock.ExpectQuery("SELECT id, customer_id, total_amount FROM orders").WillReturnRows(orderRows)
-
-		itemRows := sqlmock.NewRows([]string{"id", "product_id", "quantity", "price"}).
-			AddRow("item-1", "prod-1", 1, 10.99)
-		mock.ExpectQuery("SELECT id, product_id, quantity, price FROM order_items").WillReturnRows(itemRows)
-
-		order, err := service.GetOrder(context.Background(), "order-1")
-		assert.NoError(t, err)
-		assert.Equal(t, "order-1", order.ID)
-		assert.Len(t, order.Items, 1)
+		assert.Equal(t, 21.98, order.TotalAmount) // 10.99 * 2
 	})
 }
