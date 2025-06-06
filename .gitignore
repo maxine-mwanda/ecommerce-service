@@ -4,4 +4,8 @@ go sum.env
 
 .env
 *.secret
+*.secrets
 config/*.yaml
+kubernetes/secrets.yaml
+kubernetes/mysql-deployment.yaml
+kubernetes/gcr-secret.yaml
