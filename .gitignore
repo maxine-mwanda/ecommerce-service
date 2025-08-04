@@ -9,3 +9,8 @@ config/*.yaml
 kubernetes/secrets.yaml
 kubernetes/mysql-deployment.yaml
 kubernetes/gcr-secret.yaml
+logs
+.vscode
+.idea
+*.log
+*.tmp
