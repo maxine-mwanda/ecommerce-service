@@ -19,6 +19,7 @@ func TestProductService(t *testing.T) {
 	service := services.NewProductService(productRepo, *repositories.NewCategoryRepository(db))
 
 	t.Run("Create Product", func(t *testing.T) {
+
 		product := &models.Product{
 			Name:  "Service Test",
 			Price: 15.99,

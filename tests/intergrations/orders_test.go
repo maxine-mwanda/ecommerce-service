@@ -21,7 +21,7 @@ func TestOrderIntegration(t *testing.T) {
 
 	t.Run("Order Creation", func(t *testing.T) {
 		_, err := db.Exec(`
-			INSERT INTO orders (id, customer_id, total) VALUES
+			INSERT INTO orders (id, customer_id, total_amount) VALUES
 			('order-1', 'cust-1', 30.50);
 		`)
 		assert.NoError(t, err)

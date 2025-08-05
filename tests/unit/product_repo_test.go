@@ -18,9 +18,10 @@ func TestProductRepository(t *testing.T) {
 	t.Run("Create and Get Product", func(t *testing.T) {
 		// Create test product
 		product := &models.Product{
-			ID:    "test-product",
-			Name:  "Test Product",
-			Price: 10.99,
+			ID:         "test-product",
+			Name:       "Test Product",
+			Price:      10.99,
+			CategoryID: "cat-1",
 		}
 
 		err := repo.Create(context.Background(), product)

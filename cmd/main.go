@@ -91,7 +91,6 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	http.ListenAndServe(":"+port, nil)
 
 	server := &http.Server{
 		Addr:    ":" + cfg.Server.Port,

@@ -5,6 +5,8 @@ import (
 	"context"
 	"ecommerce-service/internal/models"
 	"ecommerce-service/internal/repositories"
+
+	"github.com/google/uuid"
 )
 
 type productService struct {
@@ -24,6 +26,9 @@ func NewProductService(
 
 func (s *productService) CreateProduct(ctx context.Context, product *models.Product) error {
 	// Verify category exists
+	if product.CategoryID == "" {
+		product.ID = uuid.New().String()
+	}
 	if _, err := s.categoryRepo.GetByID(ctx, product.CategoryID); err != nil {
 		return err
 	}

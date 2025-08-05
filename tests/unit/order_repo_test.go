@@ -14,8 +14,18 @@ import (
 func TestOrderRepository(t *testing.T) {
 	db := tests.SetupTestDB(t)
 	repo := repositories.NewOrderRepository(db)
+	customerRepo := repositories.NewCustomerRepository(db)
 
 	t.Run("Create and Get Order", func(t *testing.T) {
+		// Create test customer
+		customer := &models.Customer{
+			ID:    "test-customer",
+			Name:  "Jane Doe",
+			Email: "jane@example.com",
+		}
+
+		err := customerRepo.Create(context.Background(), customer)
+		assert.NoError(t, err)
 		// Create test order
 		order := &models.Order{
 			ID:          "test-order",
@@ -23,7 +33,7 @@ func TestOrderRepository(t *testing.T) {
 			TotalAmount: 20.99,
 		}
 
-		err := repo.Create(context.Background(), order)
+		err = repo.Create(context.Background(), order)
 		assert.NoError(t, err)
 
 		// Retrieve order
